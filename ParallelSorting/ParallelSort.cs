@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ParallelSorting
 {
-    class Program
+    class ParallelSort
     {
         static void Main(string[] args)
         {
-            test;
+            
         }
     }
 }
