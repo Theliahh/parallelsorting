@@ -10,6 +10,7 @@ namespace ParallelSorting
     {
         static void Main(string[] args)
         {
+            test;
         }
     }
 }
