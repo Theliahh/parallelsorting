@@ -10,7 +10,7 @@ namespace ParallelSorting
 {
     class ParallelSort
     {
-        const int numElements = 100000;
+        const int numElements = 1000000;
         static int[] unsortedElements = new int[numElements];
         static int[] firstArray;
         static int[] secondArray;
@@ -60,6 +60,7 @@ namespace ParallelSorting
                 Console.WriteLine(sortedArray[i]);
             }
             Console.WriteLine("Elapsed={0}", sw.Elapsed);
+            Console.ReadKey();
             Console.ReadKey();
         }
 
