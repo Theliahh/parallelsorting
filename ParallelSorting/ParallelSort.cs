@@ -10,7 +10,7 @@ namespace ParallelSorting
 {
     class ParallelSort
     {
-        static int[] unsortedElements = new int[10000];
+        static int[] unsortedElements = new int[1000000];
         static int numThreads = 1;
         static ManualResetEvent resetEvent;
 
