@@ -14,7 +14,10 @@ namespace ParallelSorting
         static int[] unsortedElements = new int[numElements];
         static int[] firstArray;
         static int[] secondArray;
-        static int numThreads = 2;
+        static int[] thirdArray;
+        static int[] fourthArray;
+
+        static int numThreads = 4;
         static ManualResetEvent resetEvent;
 
         static void Main(string[] args)
@@ -26,34 +29,52 @@ namespace ParallelSorting
             int next;
             List<int> firstList = new List<int>();
             List<int> secondList = new List<int>();
+            List<int> thirdList = new List<int>();
+            List<int> fourthList = new List<int>();
 
             for (int i = 0; i < unsortedElements.Length; i++)
             {
                 next = rng.Next(1, numElements);
-                if(next < numElements / 2)
+                if(next < numElements / numThreads)
                 {
                     firstList.Add(next);
                 }
-                else
+                else if(next > numElements / numThreads && next < numElements / 2)
                 {
                     secondList.Add(next);
+                }
+                else if(next > numElements / (numThreads / 2) && next < (numElements / 4) * 3)
+                {
+                    thirdList.Add(next);
+                }
+                else
+                {
+                    fourthList.Add(next);
                 }
 
             }
             firstArray = firstList.ToArray();
             secondArray = secondList.ToArray();
+            thirdArray = thirdList.ToArray();
+            fourthArray = fourthList.ToArray();
 
             sw.Start();
             
             Thread threadOne = new Thread(new ThreadStart(ThreadSortOne));
             Thread threadTwo = new Thread(new ThreadStart(ThreadSortTwo));
+            Thread threadThree = new Thread(new ThreadStart(ThreadSortThree));
+            Thread threadFour = new Thread(new ThreadStart(ThreadSortFour));
             threadOne.Start();
             threadTwo.Start();
+            threadThree.Start();
+            threadFour.Start();
 
             resetEvent.WaitOne();
             int[] sortedArray = new int[numElements];
             Array.Copy(firstArray, sortedArray, firstArray.Length);
             Array.Copy(secondArray, 0, sortedArray, firstArray.Length, secondArray.Length);
+            Array.Copy(thirdArray, 0, sortedArray, firstArray.Length + secondArray.Length, thirdArray.Length);
+            Array.Copy(fourthArray, 0, sortedArray, firstArray.Length + secondArray.Length + thirdArray.Length, fourthArray.Length);
             sw.Stop();
             for (int i = 0; i < sortedArray.Length; i++)
             {
@@ -83,6 +104,36 @@ namespace ParallelSorting
         {
             Console.WriteLine(Thread.CurrentThread.ManagedThreadId);
             int[] sorted = InsertionSort(secondArray);
+            //for(int i = 0; i< sorted.Length; i++)
+            //{
+            //    Console.Write("{0} ",sorted[i]);
+            //}
+            if (Interlocked.Decrement(ref numThreads) == 0)
+            {
+                resetEvent.Set();
+            }
+
+        }
+
+        public static void ThreadSortThree()
+        {
+            Console.WriteLine(Thread.CurrentThread.ManagedThreadId);
+            int[] sorted = InsertionSort(thirdArray);
+            //for(int i = 0; i< sorted.Length; i++)
+            //{
+            //    Console.Write("{0} ",sorted[i]);
+            //}
+            if (Interlocked.Decrement(ref numThreads) == 0)
+            {
+                resetEvent.Set();
+            }
+
+        }
+
+        public static void ThreadSortFour()
+        {
+            Console.WriteLine(Thread.CurrentThread.ManagedThreadId);
+            int[] sorted = InsertionSort(fourthArray);
             //for(int i = 0; i< sorted.Length; i++)
             //{
             //    Console.Write("{0} ",sorted[i]);
