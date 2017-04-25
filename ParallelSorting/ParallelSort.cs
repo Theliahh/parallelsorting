@@ -10,7 +10,7 @@ namespace ParallelSorting
 {
     class ParallelSort
     {
-        const int numElements = 1000000;
+        const int numElements = 1000;
         static int[] unsortedElements = new int[numElements];
         static int[] firstArray;
         static int[] secondArray;
@@ -118,10 +118,10 @@ namespace ParallelSorting
             Array.Copy(seventhArray, 0, sortedArray, firstArray.Length + secondArray.Length + thirdArray.Length + fourthArray.Length + fifthArray.Length + sixthArray.Length, seventhArray.Length);
             Array.Copy(eighthArray, 0, sortedArray, firstArray.Length + secondArray.Length + thirdArray.Length + fourthArray.Length + fifthArray.Length + sixthArray.Length + seventhArray.Length, eighthArray.Length);
             sw.Stop();
-            for (int i = 0; i < sortedArray.Length; i++)
-            {
-                Console.WriteLine(sortedArray[i]);
-            }
+            //for (int i = 0; i < sortedArray.Length; i++)
+            //{
+            //    Console.WriteLine(sortedArray[i]);
+            //}
             Console.WriteLine("Elapsed={0}", sw.Elapsed);
             Console.ReadKey();
             Console.ReadKey();
